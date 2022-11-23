@@ -47,17 +47,26 @@
                 <script type="text/javascript" src="js/jquery.js"></script>
                 <script type="text/javascript">
                  $(document).ready(function(){
-                  // Load Table Records
-                   function loadTable(){
-                    $.ajax({
-                      url : "ajax-load.php",
-                      type : "POST",
-                      success : function(data){
-                      $("#table-data").html(data);
-                    }
+                  function loadTable(page){
+                     $.ajax({
+                      url: "ajax-load.php",
+                      type: "POST",
+                      data: {page_no :page },
+                      success: function(data) {
+                        $("#table-data").html(data);
+                      }
+                    });
+                  }
+                  loadTable();
+                  //Pagination Code
+                  $(document).on("click","#pagination a",function(e) {
+                    e.preventDefault();
+                    var page_id = $(this).attr('id');
+                    loadTable(page_id);
                   });
-                }
-                loadTable(); 
+                
+
+                  //insert data 
                 $("#save-button").on("click",function(e){
                   e.preventDefault();
                   var fname = $("#fname").val();
@@ -86,6 +95,8 @@
                   })
                  }
                 });
+
+
                 //   //Delete Records
                 $(document).on("click",".delete-btn", function(){
                   if(confirm("Do you really want to delete this record ?")){
@@ -107,6 +118,7 @@
                   });
                 }
               });
+
                           // Live Search
                       $("#search").on("keyup",function(){
                         var search_term = $(this).val();
